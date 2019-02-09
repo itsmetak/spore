@@ -10,7 +10,7 @@ def loginReddit(creds):
 
     return reddit
 
-def getTopSongs(reddit, lim=15, time='day'):
+def getTopSongs(reddit, lim=25, time='day'):
 
     music = reddit.subreddit('Music')
     top_music = music.top(time_filter=time,limit=lim)

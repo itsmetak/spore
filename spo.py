@@ -20,11 +20,11 @@ def cleanTrackList(tracklist):
     return tracklist
     
 
-def createPlaylist(name):
+def createPlaylist(sp, name):
     plist = sp.user_playlist_create('davidtkcs', name)
     return plist
 
-def addSongsToPlaylist(plist, tracklist):
+def addSongsToPlaylist(sp, plist, tracklist):
     
     tracklist = cleanTrackList(tracklist)
     tracks = []
