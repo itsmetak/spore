@@ -13,17 +13,20 @@ def loginReddit(creds):
 def getTopSongs(reddit, lim=25, time='day'):
 
     music = reddit.subreddit('Music')
-    top_music = music.top(time_filter=time,limit=lim)
+    top_music = music.top(time_filter=time,limit=100)
 
     songs = []
 
     for music in top_music:
-        flair = music.link_flair_richtext[0]['t']
+        try:
+            flair = music.link_flair_richtext[0]['t']
+        except IndexError:
+            continue
         title = music.title
         if flair == 'music streaming':
             songs.append(title)
 
-    return songs
+    return songs[:lim]
 
 if __name__ == '__main__':
     reddit = loginReddit('creds.txt')
