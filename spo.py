@@ -19,6 +19,12 @@ def cleanTrackList(tracklist):
     tracklist = [ re.sub(r"[^a-zA-Z0-9 ]","",track) for track in tracklist ]
 
     return tracklist
+
+def clearPlaylist(sp, pl):
+    tracks = sp.user_playlist_tracks('davidtkcs', pl['id']) #trackdict
+    tracks = tracks['items']
+    tracks = [ track['track']['uri'] for track in tracks]
+    sp.user_playlist_remove_all_occurrences_of_tracks('davidtkcs', pl['id'], tracks)
     
 
 def createPlaylist(sp, name):
@@ -27,6 +33,7 @@ def createPlaylist(sp, name):
     ids = [item['name'] for item in playlists['items']]
     if name in ids:
         idlist = ids.index(name)
+        clearPlaylist(sp, playlists['items'][idlist])
         return playlists['items'][idlist]
     else:
         return sp.user_playlist_create('davidtkcs', name)
@@ -48,7 +55,7 @@ def addSongsToPlaylist(sp, plist, tracklist):
 
 
 if __name__ == '__main__':
-    l = ['Harvey Danger - Flagpole Sitta [Alternative]', 'Depeche Mode - Enjoy The Silence [Synthpop]', 'Peter Bjorn and John - Young Folks [Indie Pop]', 'The Weight - The Band [Folk]', 'Chino Cappin - Slime [Hip-Hop]', 'Mobb Deep - Shook Ones [Hip-Hop]', 'Stevie Wonder - Superstition [R&B]', 'Robert Plant & Alison Krauss - Fortune Teller [ rock folk ]', 'Dead Kennedys - Pull My Strings [Punk Rock]', 'RX Bandits - Apparition - Audiotree Live [Prog Rock]', "DVDA - Now You're a Man [Rock/South Park]"]
+    l = ['Depeche Mode - Enjoy The Silence [Synthpop]', 'Peter Bjorn and John - Young Folks [Indie Pop]', 'The Weight - The Band [Folk]', 'Chino Cappin - Slime [Hip-Hop]', 'Mobb Deep - Shook Ones [Hip-Hop]', 'Stevie Wonder - Superstition [R&B]', 'Robert Plant & Alison Krauss - Fortune Teller [ rock folk ]', 'Dead Kennedys - Pull My Strings [Punk Rock]', 'RX Bandits - Apparition - Audiotree Live [Prog Rock]', "DVDA - Now You're a Man [Rock/South Park]"]
     sp = loginSpotify('spotcreds.txt')
     pl = createPlaylist(sp, 'test')
     addSongsToPlaylist(sp,pl,l)
